@@ -1,0 +1,32 @@
+[
+	{
+		"id": 619,
+		"title": "producto de prueba0100",
+		"description": "descripcion del producto",
+		"code": "4444",
+		"price": 30000,
+		"status": true,
+		"stock": "23",
+		"category": "food"
+	},
+	{
+		"id": 144,
+		"title": "producto de prueba0100",
+		"description": "descripcion del producto",
+		"code": "333",
+		"price": 30000,
+		"status": true,
+		"stock": "23",
+		"category": "food"
+	},
+	{
+		"id": 884,
+		"title": "producto de prueba0100",
+		"description": "descripcion del producto",
+		"code": "234",
+		"price": 30000,
+		"status": true,
+		"stock": "23",
+		"category": "food"
+	}
+]
