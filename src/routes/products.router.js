@@ -115,7 +115,7 @@ router.post('/', async (req, res) => {
 router.put('/:pid', async (req, res) => {
     const products = await readArchive('Productos')
 
-    const productId = parseInt(req.params.pid) // nota: los parámetros vienen como strings
+    const productId = parseInt(req.params.pid) 
     const productIndex = await products.findIndex(p => p.id === productId)
 
     if (isNaN(productId)) {
@@ -143,7 +143,7 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     const products = await readArchive('Productos')
 
-    const productId = parseInt(req.params.pid) // nota: los parámetros vienen como strings
+    const productId = parseInt(req.params.pid) 
     const productIndex = await products.findIndex(p => p.id === productId)
 
     if (isNaN(productId)) {
