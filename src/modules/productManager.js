@@ -17,7 +17,7 @@ class ProductManager {
     catch (err) {
       if (err.code === 'ENOENT') {
         // El archivo no existe, se crea con un array vacío
-        updateFile()
+        await fs.promises.writeFile(this.#path, JSON.stringify(this.#products, null, '\t'))
         console.log('Archivo creado con un array vacío.');
         return [];
       } else {
@@ -30,21 +30,23 @@ class ProductManager {
 
 
   async updateFile() {
+    
     await fs.promises.writeFile(this.#path, JSON.stringify(this.#products, null, '\t'))
   }
 
 
 
   async addProduct(newProduct) {
+    console.log(newProduct)
     const { title, description, price, thumbnail, code, stock } = newProduct
 
     if (title || description || price || thumbnail || code || stock) {
       if (this.#products.some(product => product.code === code)) {
-
-        return console.log('Error: ya existe un producto con ese codigo')
+        console.log('Error: ya existe un producto con ese codigo')
+        return false
       }
 
-      const newProduct = {
+      const createProduct = {
         id: "",
         title,
         description,
@@ -53,22 +55,18 @@ class ProductManager {
         code,
         stock
       }
-      newProduct.id = Number.parseInt(Math.random() * 1000)
+      createProduct.id = Number.parseInt(Math.random() * 1000)
 
 
-      const validateId = await this.#products.find(product => product.id === producto.id)
-      const validateCode = await this.#products.find(product => product.code === producto.code)
-      if (validateCode) {
-        console.log({ Status: "CODE DUPLICATED", message: "No es posible agregar productos con el mismo codigo" })
-        return
-      }
+      const validateId = await this.#products.find(product => product.id === createProduct.id)
       while (validateId) {
-        newProduct.id = Number.parseInt(Math.random() * 1000)
+        createProduct.id = Number.parseInt(Math.random() * 1000)
       }
 
 
-      this.#products.push(newProduct)
-      updateFile()
+      this.#products.push(createProduct)
+      return true
+      
 
 
     } else { return console.log('los campos no pueden estar vacios') }
@@ -76,7 +74,6 @@ class ProductManager {
 
   async getProducts() {
     try {
-      await this.iniciar()
       return this.#products
 
     }
@@ -97,8 +94,13 @@ class ProductManager {
       if (foundProduct) {
 
         return (foundProduct)
+      }else {
+        console.error("Not Found")
+        return 
+
       }
-      console.log("Not Found")
+      
+      
     }
     catch (err) {
       console.error("Error al procesar solicitud")
@@ -127,7 +129,7 @@ class ProductManager {
 
 
 
-      updateFile()
+
       console.log({ status: "Success!", Message: "El producto ha sido actualizado correctamente" })
 
     }
@@ -140,11 +142,9 @@ class ProductManager {
   }
   async deleteProduct(id) {
     try {
-      this.iniciar()
       const foundProductIdx = this.#products.findIndex(product => product.id === id)
       if (!foundProductIdx < 0) {
         this.#products.splice(foundProductIdx, 1)
-        updateFile()
         return
       }
       console.log({ error: "Producto no encontrado" })
@@ -164,6 +164,4 @@ class ProductManager {
 };
 
 
-module.exports = {
-  ProductManager
-}
+module.exports = ProductManager
