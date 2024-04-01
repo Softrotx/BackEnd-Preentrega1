@@ -52,8 +52,7 @@ router.post('/', async (req, res) => {
         const ProductManager = req.app.get('ProductManager')
         const nuevoProducto = await ProductManager.addProduct(req.body)
         if (nuevoProducto) {
-            await ProductManager.updateFile()
-            res.json({ status: "success!", Message: "El producto fue correctamente agregado" })
+            res.json(nuevoProducto)
             return
         }
         res.json({ status: "Error!", Message: "El producto no pudo ser agregado" })
@@ -71,7 +70,7 @@ router.put('/:pid', async (req, res) => {
     const pid = req.params.pid
     const ProductManager = req.app.get('ProductManager')
     await ProductManager.updateProduct(pid, req.body)
-    await ProductManager.updateFile()
+    // await ProductManager.updateFile()
 })
 
 router.delete('/:pid', async (req, res) => {
@@ -81,8 +80,8 @@ router.delete('/:pid', async (req, res) => {
         return
     }
     const ProductManager = req.app.get('ProductManager')
-    await ProductManager.addProduct(pid)
-    await ProductManager.updateFile()
+    await ProductManager.deleteProduct(pid)
+    // await ProductManager.updateFile()
 
     res.status(202).send({ status: "Success!", Message: "El producto ha sido eliminado correctamente" })
 

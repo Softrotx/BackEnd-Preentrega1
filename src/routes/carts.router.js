@@ -7,7 +7,6 @@ router.post('/', async (req, res) => {
         const productToCart = await CartManager.addCart()
         console.log(productToCart)
         if (productToCart) {
-            await CartManager.updateFile()
             res.json({ status: "success!", Message: `El Carrito ID: ${productToCart.id} fue correctamente creado` })
             return
         }
@@ -24,8 +23,9 @@ router.post('/', async (req, res) => {
 
 router.get('/:cid', async (req, res) => {
     try {
-        const cartId = parseInt(req.params.cid)
-        if (isNaN(cartId)) {
+        const cartId = req.params.cid
+        console.log(cartId)
+        if (cartId.length !== 24) {
             // HTTP 400 => hay un error en el request o alguno de sus parámetros
             res.status(400).json({ error: "Invalid ID format" })
             return
@@ -49,9 +49,9 @@ router.get('/:cid', async (req, res) => {
 
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
-        const cartId = parseInt(req.params.cid)
-        const productId = parseInt(req.params.pid)
-        if (isNaN(cartId || productId)) {
+        const cartId = req.params.cid
+        const productId = req.params.pid
+        if (productId.length || cartId.length !== 24) {
             res.status(400).json({ error: "Invalid ID format" })
             return
         }

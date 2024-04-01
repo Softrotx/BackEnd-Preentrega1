@@ -77,7 +77,7 @@ class CartManager {
         console.log({ error: "No existe el Carrito solicitado" })
         return
       }
-      const productOnCart = await this.#carts[cartIndex].products.findIndex(({ ProductID }) => ProductID === productData.id)
+      const productOnCart = await this.#carts[cartIndex].products.findIndex(({ ProductID }) => ProductID === +productData.id)
 
       if (productOnCart >= 0) {
         let cantidad = parseInt(this.#carts[cartIndex].products[productOnCart].quantity) + 1
