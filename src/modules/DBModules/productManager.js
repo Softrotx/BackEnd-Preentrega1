@@ -39,9 +39,10 @@ class ProductManager {
 
 
 
-  async getProductById(id) {
+  async getProductById(pid) {
     try {
-      const foundProduct = await Products.findById(id);
+      console.log(pid)
+      const foundProduct = await Products.findById(pid);
 
       if (foundProduct) {
 
@@ -63,46 +64,52 @@ class ProductManager {
       try {
         
         if (pid.length !== 24 ) {
-          console.log({ error: "Invalid ID format" })
-          return
+          
+          return console.log({ error: "Invalid ID format" })
         }
-        const foundProduct = await Products.findByIdAndUpdate(pid, newData)
+        const productUpdating = await Products.findByIdAndUpdate(pid, newData)
+        const productUpdated = await Products.findById(pid)
 
-        if (!foundProduct) {
+        if (!productUpdating) {
           console.log({ error: "User not found" })
           return
         }
-        Products.save()
-        console.log({ status: "Success!", Message: "El producto ha sido actualizado correctamente" })
+        return productUpdated
 
       }
 
 
-      catch {
-        console.error("error al actualizar el contenido")
+      catch (err) {
+        console.error("error al actualizar el contenido " + err)
 
       }
     }
-  //   async deleteProduct(id) {
-  //     try {
-  //       const foundProductIdx = this.#products.findIndex(product => product.id === id)
-  //       if (!foundProductIdx < 0) {
-  //         this.#products.splice(foundProductIdx, 1)
-  //         return
-  //       }
-  //       console.log({ error: "Producto no encontrado" })
-  //       return
+    async deleteProduct(pid) {
+      try {
+        if (pid.length !== 24 ) {
+          
+          return console.log({ error: "Invalid ID format" })
+        }
+        console.log(await Products.findById(pid))
+        const foundProductIdx = await Products.findByIdAndDelete(pid)
+
+        console.log(foundProductIdx)
+        if (foundProductIdx) {
+          
+          return {status: "Success", msg: "producto eliminado correctamente"}
+        }
+        return { error: "Producto no encontrado" }
 
 
-  //     }
+      }
 
 
-  //     catch {
-  //   console.log('error al eliminar el producto')
-  // }
+      catch (err){ 
+    return {status: 'error al eliminar el producto ', ERROR: err}
+  }
 
 
-  //   }
+    }
 
 };
 

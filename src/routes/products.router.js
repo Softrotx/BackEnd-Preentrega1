@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:pid', async (req, res) => {
     try {
-        const pid = +req.params.pid
+        const pid = req.params.pid
         if (pid.length !== 24) {
             // HTTP 400 => hay un error en el request o alguno de sus parámetros
             res.status(400).json({ error: "Invalid ID format" })
@@ -69,21 +69,18 @@ router.post('/', async (req, res) => {
 router.put('/:pid', async (req, res) => {
     const pid = req.params.pid
     const ProductManager = req.app.get('ProductManager')
-    await ProductManager.updateProduct(pid, req.body)
+    const Updated = await ProductManager.updateProduct(pid, req.body)
     // await ProductManager.updateFile()
+    res.json(`producto correctamente actualizado: ${Updated}`)
 })
 
 router.delete('/:pid', async (req, res) => {
     const pid = req.params.pid
-    if (isNaN(pid)) {
-        res.status(400).json({ error: "formato de ID invalido" })
-        return
-    }
     const ProductManager = req.app.get('ProductManager')
-    await ProductManager.deleteProduct(pid)
+    const deleted = await ProductManager.deleteProduct(pid)
     // await ProductManager.updateFile()
 
-    res.status(202).send({ status: "Success!", Message: "El producto ha sido eliminado correctamente" })
+    res.status(202).send(deleted)
 
 
 

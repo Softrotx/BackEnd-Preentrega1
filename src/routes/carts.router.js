@@ -51,32 +51,25 @@ router.post('/:cid/product/:pid', async (req, res) => {
     try {
         const cartId = req.params.cid
         const productId = req.params.pid
-        if (productId.length || cartId.length !== 24) {
+        if (productId.length !== 24 || cartId.length !== 24) {
             res.status(400).json({ error: "Invalid ID format" })
             return
         }
         const CartManager = req.app.get('CartManager')
         const ProductManager = req.app.get('ProductManager')
         const product = await ProductManager.getProductById(productId)
-        if (!product){
-            console.log("producto no encontrado")
+        if (!product) {
+            res.status(400).json("producto no encontrado")
             return
         }
-        const productToCart = await CartManager.updateCart(cartId, product)
+        const productToCart = await CartManager.updateCart(cartId, productId)
 
-        if(productToCart){
-            CartManager.updateFile()
-            res.status(201).send({status: "Success!", message: `Producto ID ${productId} agregado correctamente al Carrito N° ${cartId}`})
-        }
-     
-        
-        
-        
+        res.json(productToCart)
     }
     catch (err) {
-        res.status(500).send({status: "Success!", message: `Error interno`,error: err })
+        throw err
 
-}
+    }
 
 
 
