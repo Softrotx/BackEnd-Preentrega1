@@ -27,13 +27,13 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
     try {
         const pid = +req.params.pid
-        const ProductManager = req.app.get('ProductManager')
-        const productFound = await ProductManager.getProductById(pid)
-        if (isNaN(pid)) {
+        if (pid.length !== 24) {
             // HTTP 400 => hay un error en el request o alguno de sus parámetros
             res.status(400).json({ error: "Invalid ID format" })
             return
         }
+        const ProductManager = req.app.get('ProductManager')
+        const productFound = await ProductManager.getProductById(pid)
         if (productFound === undefined) {
             res.status(400).json({ error: "No existe el producto solicitado" })
             return

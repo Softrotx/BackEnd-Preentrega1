@@ -42,57 +42,47 @@ class ProductManager {
   async getProductById(id) {
     try {
       const foundProduct = await Products.findById(id);
-      console.log(foundProduct)
 
       if (foundProduct) {
 
         return (foundProduct)
       } else {
-        console.error("Not Found")
-        return
+        
+        return console.error("Not Found")
 
       }
 
 
     }
     catch (err) {
-      console.error("Error al procesar solicitud")
-      throw (err)
-
+      return console.error("Error al procesar solicitud" + err)
     }
 
   }
-  //   async updateProduct(pid, newData) {
-  //     try {
-  //       await this.iniciar()
-  //       const foundProductIdx = this.#products.findIndex(product => product.id === pid);
+    async updateProduct(pid, newData) {
+      try {
+        
+        if (pid.length !== 24 ) {
+          console.log({ error: "Invalid ID format" })
+          return
+        }
+        const foundProduct = await Products.findByIdAndUpdate(pid, newData)
 
-  //       if (isNaN(pid)) {
-  //         console.log({ error: "Invalid ID format" })
-  //         return
-  //       }
+        if (!foundProduct) {
+          console.log({ error: "User not found" })
+          return
+        }
+        Products.save()
+        console.log({ status: "Success!", Message: "El producto ha sido actualizado correctamente" })
 
-  //       if (foundProductIdx < 0) {
-  //         console.log({ error: "User not found" })
-  //         return
-  //       }
-
-  //       const newProductData = await { ...this.#products[foundProductIdx], ...newData }
-  //       this.#products[foundProductIdx] = newProductData
-
-
+      }
 
 
-  //       console.log({ status: "Success!", Message: "El producto ha sido actualizado correctamente" })
+      catch {
+        console.error("error al actualizar el contenido")
 
-  //     }
-
-
-  //     catch {
-  //       console.error("error al actualizar el contenido")
-
-  //     }
-  //   }
+      }
+    }
   //   async deleteProduct(id) {
   //     try {
   //       const foundProductIdx = this.#products.findIndex(product => product.id === id)
