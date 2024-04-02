@@ -3,13 +3,19 @@ const { Products } = require("../../models")
 
 
 class ProductManager {
+  #products
+  
+
   constructor() {
+    this.#products = []
+
   }
 
   async addProduct(newData) {
     const titulo = newData.title
 
     const busqueda = await Products.findOne({ title: titulo })
+
     if (busqueda){
       return {error: "el producto ya existe"}
     }
@@ -28,7 +34,9 @@ class ProductManager {
 
   async getProducts() {
     try {
-      return await Products.find({})
+      const productos = await Products.find({})
+
+      return productos.map(d => d.toObject({ virtuals: true }))
 
     }
     catch (err) {
