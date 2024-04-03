@@ -6,7 +6,6 @@ router.get('/', async (req, res) => {
     
     const ProductManager = req.app.get("ProductManager")
     const products = await ProductManager.getProducts()
-    console.log(products)
     
     res.render('index', {
         title: 'Product Manager',
@@ -15,7 +14,10 @@ router.get('/', async (req, res) => {
         scripts: [
             'index.js'
         ],
-        products
+        products,
+        styles: [
+            'index.css'
+        ]
     })
 })
 

@@ -1,13 +1,15 @@
-const ProductManager = require('./modules/DBModules/productManager')
-const CartManager = require('./modules/DBModules/cartManager')
+
+const ProductManager = require('./dao/DBModules/productManager')
+const CartManager = require('./dao/DBModules/cartManager')
 const productsRouter = require('./routes/products.router')
 const viewsRouter = require('./routes/views.router')
+const chatRouter = require('./routes/chat.router')
 const cartsRouter = require('./routes/carts.router')
 const express = require('express');
 const { mongoose } = require('mongoose');
 const handlebars = require('express-handlebars')
 const { Server } = require('socket.io')
-
+const { Chat } = require('./dao/models');
 
 const app = express();
 // permitir envío de información mediante formularios y JSON
@@ -24,7 +26,7 @@ app.use(express.static(`${__dirname}/../public`))
 app.use('/', viewsRouter)
 app.use('/api/products', productsRouter )
 app.use('/api/carts', cartsRouter )
-
+app.use('/api/chat', chatRouter )
 
 
 const main = async () => {
@@ -46,15 +48,22 @@ const main = async () => {
     })
     // crear un servidor para WS
     const io = new Server(httpServer)
+    const menssageLogs = []
 
     io.on('connection', clientSocket => {
-        console.log(`Nuevo cliente conectado => ${clientSocket.id}`)
+        const user = clientSocket.id.replace(/[A-Z, 0-9,-,_]/g, '')
+        console.log(`Nuevo cliente conectado => ${user}`)
+
     
         clientSocket.on('message', (data) => {
-            menssageLogs.push(data)
-            io.emit('message', data)
-            console.log(menssageLogs)
-    
+            const msg = data
+            const message = {user, msg}
+            menssageLogs.push(message)
+            io.emit('message', message)
+
+            Chat.create()
+
+
         })
         for (const message of menssageLogs) {
             clientSocket.emit('message', message)

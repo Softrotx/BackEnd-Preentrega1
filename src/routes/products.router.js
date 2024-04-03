@@ -1,4 +1,3 @@
-const { throws } = require('assert');
 const { Router } = require('express')
 const router = Router();
 const fs = require('fs')

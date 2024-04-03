@@ -1,13 +1,11 @@
-const { Products } = require("../../models")
+const { Products } = require("../models")
 
 
 
 class ProductManager {
-  #products
   
 
   constructor() {
-    this.#products = []
 
   }
 
@@ -20,7 +18,6 @@ class ProductManager {
       return {error: "el producto ya existe"}
     }
     const cuenta = await Products.countDocuments({})
-    console.log(cuenta)
     newData.code = 1 * 10000000 + cuenta +1
     const newProduct = await Products.create(newData)
 
@@ -49,7 +46,6 @@ class ProductManager {
 
   async getProductById(pid) {
     try {
-      console.log(pid)
       const foundProduct = await Products.findById(pid);
 
       if (foundProduct) {
@@ -73,7 +69,7 @@ class ProductManager {
         
         if (pid.length !== 24 ) {
           
-          return console.log({ error: "Invalid ID format" })
+          return { error: "Invalid ID format" }
         }
         const productUpdating = await Products.findByIdAndUpdate(pid, newData)
         const productUpdated = await Products.findById(pid)
@@ -98,10 +94,10 @@ class ProductManager {
           
           return console.log({ error: "Invalid ID format" })
         }
-        console.log(await Products.findById(pid))
+        
         const foundProductIdx = await Products.findByIdAndDelete(pid)
 
-        console.log(foundProductIdx)
+        
         if (foundProductIdx) {
           
           return {status: "Success", msg: "producto eliminado correctamente"}

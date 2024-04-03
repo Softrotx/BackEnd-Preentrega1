@@ -1,15 +1,12 @@
 <div>
     {{#each products}}
     <div class="producto">
-        <img src={{this.thumbnails}} alt="" srcset="">
+        <img src={{thumbnails}} alt="" srcset="">
         <h2>{{title}}</h2>
         <div class="boxOfSell">
-            <p> {{price}} </p>
-            <p> {{stock}} </p>
+            <p> Precio: {{price}} CLP</p>
+            <p> Disponibles: {{stock}} unidades </p>
             <button id= "btnComprar" type="button">Comprar</button>
-
-
-
         </div>
 
     </div>

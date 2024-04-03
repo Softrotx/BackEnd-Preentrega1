@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +11,20 @@
     <link rel="stylesheet" href="/css/{{this}}">
     {{/each}}
 </head>
+
 <body>
     {{{body}}}
+
+    <div class="card">
+        <div class="chat-header">Chat</div>
+        <div class="chat-window" id="chat-window">
+            {{!-- <ul id="message-list" class="message-list"></ul> --}}
+        </div>
+        <div class="chat-input">
+            <input id="inputMsg" type="text" class="message-input" placeholder="Type your message here" name="message">
+            <button id="btnSend" class="send-button">Enviar</button>
+        </div>
+    </div>
 
     {{!-- incluir librería sweetalert si es necesario --}}
     {{#if useSweetAlert }}
@@ -28,7 +41,9 @@
     <script src="/js/{{this}}"></script>
     {{/each}}
 
-    
-</body>
-</html>
 
+
+
+</body>
+
+</html>

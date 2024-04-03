@@ -1,5 +1,5 @@
 
-const { Carts } = require('../../models');
+const { Carts } = require('../models');
 
 class CartManager {
 
